@@ -1,0 +1,16 @@
+[package]
+name = "senemosia_kernel"
+version = "0.1.0"
+edition = "2021"
+authors = ["Senemosìa Cooperative"]
+description = "Quasicrystalline Operating System - 6D→3D Projection Kernel"
+
+[dependencies]
+# Mathematical library for no_std (sqrt, cos, sin, etc.)
+libm = "0.2"
+
+[profile.release]
+panic = "abort"
+lto = true
+opt-level = "z"
+strip = true
