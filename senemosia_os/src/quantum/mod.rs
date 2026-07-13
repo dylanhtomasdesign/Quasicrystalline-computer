@@ -1,8 +1,9 @@
-//! Quantum Computing Module
-//! Interfaces with quantum hardware or simulates quantum circuits.
+//! QPU Module - Quantum Processing Unit Interface
 
-pub mod qubit;
-pub mod interface;
+pub mod grover;
+pub mod qasm;
+pub mod registers;
 
-pub use qubit::{Qubit, QuantumState};
-pub use interface::{QuantumProcessor, QuantumBackend, QuantumGeometricBridge};
+pub use grover::GroverSearch;
+pub use qasm::{QASMGenerator, OpenQASM3};
+pub use registers::{QPUDriver, QPURegisters};

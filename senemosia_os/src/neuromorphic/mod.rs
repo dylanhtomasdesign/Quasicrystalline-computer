@@ -1,6 +1,11 @@
-//! Neuromorphic Computing Module
-//! Interfaces with neuromorphic hardware.
+//! Neuromorphic Module - Memristor-based in-memory computing
 
-pub mod interface;
+pub mod memristor;
 
-pub use interface::{NeuromorphicBackend, NeuromorphicConfig, NeuromorphicGeometricBridge};
+pub use memristor::{
+    MemristorArray,
+    MemristorState,
+    STDPSpikeGenerator,
+    MEMRISTOR_CTRL_REG,
+    STDP_TIMING_REG,
+};
