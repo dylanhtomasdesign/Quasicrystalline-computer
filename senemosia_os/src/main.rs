@@ -20,12 +20,18 @@ mod syscall;
 mod ipc;
 mod net;
 mod phi;
+mod quantum;
+mod neuromorphic;
+mod analog;
 
 use memory::QuasicrystalAllocator;
 use sched::SpectralScheduler;
 use fs::HarmonicAllocationTable;
 use drivers::Framebuffer;
 use phi::SpatialDictionary;
+use quantum::{GroverSearch, QPUDriver, QASMGenerator};
+use neuromorphic::memristor::MemristorArray;
+use analog::AnalogSpectralSolver;
 
 /// Kernel panic handler
 #[panic_handler]
@@ -42,7 +48,19 @@ pub extern "C" fn _start() -> ! {
     let mut hat = HarmonicAllocationTable::new();
     let mut dictionary = SpatialDictionary::new();
 
-    // Create anchor point (example_node_1 from senemosia_data.json)
+    // === HETEROGENEOUS HARDWARE INITIALIZATION ===
+
+    // 1. QPU - Quantum Processing Unit (Grover's algorithm for DB search)
+    let mut qpu_driver = QPUDriver::new();
+    let mut grover = GroverSearch::new(8, 42); // 8 qubits, target index 42
+
+    // 2. NPU - Neuromorphic Processing Unit (Memristor crossbar)
+    let mut memristor_array = MemristorArray::new(64, 64, 1e-3); // 64x64 crossbar
+
+    // 3. Analog - Spectral Solver (Laplacian eigenvalue via KCL/KVL)
+    let mut analog_solver = AnalogSpectralSolver::new();
+
+    // Create anchor point
     let anchor_coords = [
         0.6180339887,  // φ⁻¹
         1.0,
@@ -52,23 +70,18 @@ pub extern "C" fn _start() -> ! {
         0.6180339887,
     ];
 
-    // Allocate anchor node in geometric memory
+    // Allocate anchor node
     let _anchor_address = match allocator.allocate_node(&anchor_coords) {
         Ok(addr) => addr,
         Err(_) => 0,
     };
 
-    // Add process to scheduler
     scheduler.add_process(anchor_coords);
-
-    // Create root node in SNFS
     let _root_inode = hat.create_node("example_node_1", anchor_coords);
-
-    // Register anchor in spatial dictionary
+    
     let key_bytes = b"example_node_1";
     let _dict_entry = dictionary.register_node(key_bytes, anchor_coords, 1.618);
 
-    // Initialize video framebuffer (would be set up by bootloader)
     let _fb = Framebuffer::new(0xFFFF_FFFF as *mut u32, 1024, 768);
 
     // Main kernel loop
