@@ -20,12 +20,18 @@ mod syscall;
 mod ipc;
 mod net;
 mod phi;
+mod quantum;
+mod neuromorphic;
+mod hybrid;
 
 use memory::QuasicrystalAllocator;
 use sched::SpectralScheduler;
 use fs::HarmonicAllocationTable;
 use drivers::Framebuffer;
 use phi::SpatialDictionary;
+use quantum::QuantumGeometricBridge;
+use neuromorphic::NeuromorphicGeometricBridge;
+use hybrid::HybridGeometricBridge;
 
 /// Kernel panic handler
 #[panic_handler]
@@ -41,6 +47,15 @@ pub extern "C" fn _start() -> ! {
     let mut scheduler = SpectralScheduler::new();
     let mut hat = HarmonicAllocationTable::new();
     let mut dictionary = SpatialDictionary::new();
+
+    // Initialize quantum processor
+    let _quantum = QuantumGeometricBridge::new();
+
+    // Initialize neuromorphic processor  
+    let _neuromorphic = NeuromorphicGeometricBridge::new(256);
+
+    // Initialize hybrid processor
+    let _hybrid = HybridGeometricBridge::new();
 
     // Create anchor point (example_node_1 from senemosia_data.json)
     let anchor_coords = [
