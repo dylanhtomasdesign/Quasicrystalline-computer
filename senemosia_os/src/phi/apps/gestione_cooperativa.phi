@@ -1,0 +1,229 @@
+// applicazione: gestione_cooperativa.phi
+// Sistema di gestione della cooperativa con dizionario spaziale armonico
+// Esempio di registrazione e instradamento dinamico dei nodi
+
+usa core::libraries::dizionario;
+usa core::syscalls;
+usa core::ipc;
+
+// Costanti della cooperativa
+costanti CooperativaCostanti {
+    TIPO_PRODUTTORE: Stringa = "Produttore";
+    TIPO_RIDER: Stringa = "Rider";
+    TIPO_DISTRIBUTORE: Stringa = "Distributore",
+    TIPO_CLIENTE: Stringa = "Cliente"
+}
+
+// Struttura per un membro della cooperativa
+record MembroCooperativa {
+    nome: Stringa,
+    tipo: Stringa,
+    coordinate_6d: MatriceReale[6],
+    attivo: Booleano
+}
+
+// ============================================
+// Applicazione Principale
+// ============================================
+
+funzione main(): Intero {
+    ScriviLinea("===============================================");
+    ScriviLinea("  SISTEMA DI GESTIONE COOPERATIVA");
+    ScriviLinea("  Dizionario Spaziale Armonico v1.0");
+    ScriviLinea("===============================================");
+    ScriviLinea("");
+
+    // 1. Inizializza il dizionario spaziale armonico
+    ScriviLinea("[1] Inizializzazione del Dizionario Spaziale...");
+    mappa_sistema = DizionarioSpaziale.inizializza();
+    ScriviLinea("      Dizionario inizializzato con successo.");
+    ScriviLinea("");
+
+    // 2. Registrazione dei produttori locali
+    ScriviLinea("[2] Registrazione Produttori Locali...");
+    registro_produttori(mappa_sistema);
+    ScriviLinea("");
+
+    // 3. Registrazione dei rider
+    ScriviLinea("[3] Registrazione Rider...");
+    registro_rider(mappa_sistema);
+    ScriviLinea("");
+
+    // 4. Simulazione di instradamento flusso IPC
+    ScriviLinea("[4] Simulazione Instradamento Flusso d'Onda...");
+    simula_notifica_consegna(mappa_sistema);
+    ScriviLinea("");
+
+    // 5. Visualizzazione del dizionario
+    ScriviLinea("[5] Contenuto Completo del Dizionario:");
+    mappa_sistema.stampa_contenuto();
+    ScriviLinea("");
+
+    // 6. Test di risoluzione
+    ScriviLinea("[6] Test di Risoluzione...");
+    test_risoluzione(mappa_sistema);
+    ScriviLinea("");
+
+    ScriviLinea("===============================================");
+    ScriviLinea("  Operazioni completate con successo!");
+    ScriviLinea("===============================================");
+
+    ritorna 0;
+}
+
+// ============================================
+// Funzioni di Registrazione
+// ============================================
+
+funzione registro_produttori(dizionario: DizionarioSpaziale): Void {
+    // Produttore OrtoBiologico - coordinate stabili vicino al punto zero
+    coord_ortobio = [
+        0.618,    // φ⁻¹
+        1.0,      // φ⁰
+        0.382,    // 1 - φ⁻¹
+        0.0,
+        1.0,
+        0.618
+    ];
+    
+    risultato = dizionario.associa("Produttore_OrtoBio", coord_ortobio);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Produttore_OrtoBio");
+        ScriviLinea("        Coordinate: [" + coord_ortobio[0] + ", " + coord_ortobio[1] + ", ...]");
+    } altrimenti {
+        ScriviLinea("      ✗ Errore registrazione: " + risultato.errore);
+    }
+
+    // Produttore Cascina Verdiana - coordinate sfasate
+    coord_cascina = [
+        0.618,
+        1.0,
+        0.382,
+        PHI,      // Inseriamo φ per differenziare
+        0.0,
+        1.0
+    ];
+    
+    risultato = dizionario.associa("Cascina_Verdiana", coord_cascina);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Cascina_Verdiana");
+    }
+
+    // Apicoltura Millefiori - coordinate auto-generate (tutte zero in input)
+    risultato = dizionario.associa("Apicoltura_Millefiori", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Apicoltura_Millefiori (coordinate auto-generate)");
+    }
+}
+
+funzione registro_rider(dizionario: DizionarioSpaziale): Void {
+    // Rider Marco Rossi - moto su φ per differenziarsi dai produttori
+    coord_marco = [
+        PHI,      // Coordinate φ per i rider
+        1.0,
+        PHI * 0.5,
+        0.618,
+        0.0,
+        1.0
+    ];
+    
+    risultato = dizionario.associa("Rider_Marco", coord_marco);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Rider_Marco");
+    }
+
+    // Rider Giulia Bianchi
+    coord_giulia = [
+        PHI,
+        1.0,
+        PHI * 0.5,
+        PHI * 0.382,
+        0.0,
+        PHI_INV
+    ];
+    
+    risultato = dizionario.associa("Rider_Giulia", coord_giulia);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Rider_Giulia");
+    }
+
+    // Rider Luca Verdi - coordinate auto-generate
+    risultato = dizionario.associa("Rider_Luca", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+    se (risultato.esito == Ok) {
+        ScriviLinea("      ✓ Registrato: Rider_Luca (coordinate auto-generate)");
+    }
+}
+
+// ============================================
+// Funzioni di Simulazione
+// ============================================
+
+funzione simula_notifica_consegna(dizionario: DizionarioSpaziale): Void {
+    // Recupera le coordinate del rider
+    risultato_coord = dizionario.risolvi("Rider_Marco");
+    
+    se (risultato_coord.esito == Ok) {
+        coord_dest = risultato_coord.valore;
+        
+        ScriviLinea("      Risoluzione completata:");
+        ScriviLinea("        Destinatario: Rider_Marco");
+        ScriviLinea("        Coordinate: [" 
+            + coord_dest[0] + ", " 
+            + coord_dest[1] + ", "
+            + coord_dest[2] + ", "
+            + coord_dest[3] + ", "
+            + coord_dest[4] + ", "
+            + coord_dest[5] + "]");
+        
+        // Costruisci il messaggio
+        messaggio = "Nuovo ordine disponibile presso OrtoBio - 3 cassette verdure miste";
+        
+        ScriviLinea("        Messaggio: " + messaggio);
+        
+        // Simulazione della syscall di invio onda IPC
+        // SYSCALL(SYS_WAVE_IPC_SEND, coord_dest, messaggio)
+        ScriviLinea("      ✓ Flusso d'onda instradato con successo tramite risoluzione del dizionario.");
+        
+    } altrimenti {
+        ScriviLinea("      ✗ Errore risoluzione: " + risultato_coord.errore);
+    }
+}
+
+funzione test_risoluzione(dizionario: DizionarioSpaziale): Void {
+    // Test risoluzione di tutti i nodi registrati
+    nodi_da_testare = [
+        "Produttore_OrtoBio",
+        "Rider_Marco",
+        "Cascina_Verdiana",
+        "Apicoltura_Millefiori",
+        "NodoInesistente"
+    ];
+    
+    per ogni nome in nodi_da_testare {
+        risultato = dizionario.risolvi(nome);
+        se (risultato.esito == Ok) {
+            ScriviLinea("      ✓ " + nome + " → risolto");
+        } altrimenti {
+            ScriviLinea("      ✗ " + nome + " → non trovato");
+        }
+    }
+}
+
+// ============================================
+// Funzioni Ausiliarie
+// ============================================
+
+// Ritorna il rapporto aureo
+funzione PHI(): Reale {
+    ritorna 1.6180339887;
+}
+
+// Ritorna l'inverso del rapporto aureo
+funzione PHI_INV(): Reale {
+    ritorna 0.6180339887;
+}
+
+// Estrae una coordinata specifica da una matrice
+funzione estrai_coordinata(matrice: MatriceReale[6], indice: Intero): Reale {
+    ritorna matrice[indice];
+}

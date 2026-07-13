@@ -19,11 +19,13 @@ mod interrupts;
 mod syscall;
 mod ipc;
 mod net;
+mod phi;
 
 use memory::QuasicrystalAllocator;
 use sched::SpectralScheduler;
 use fs::HarmonicAllocationTable;
 use drivers::Framebuffer;
+use phi::SpatialDictionary;
 
 /// Kernel panic handler
 #[panic_handler]
@@ -38,6 +40,7 @@ pub extern "C" fn _start() -> ! {
     let mut allocator = QuasicrystalAllocator::new(0x00100000, 16 * 1024 * 1024);
     let mut scheduler = SpectralScheduler::new();
     let mut hat = HarmonicAllocationTable::new();
+    let mut dictionary = SpatialDictionary::new();
 
     // Create anchor point (example_node_1 from senemosia_data.json)
     let anchor_coords = [
@@ -49,7 +52,7 @@ pub extern "C" fn _start() -> ! {
         0.6180339887,
     ];
 
-    // Allocate anchor node
+    // Allocate anchor node in geometric memory
     let _anchor_address = match allocator.allocate_node(&anchor_coords) {
         Ok(addr) => addr,
         Err(_) => 0,
@@ -60,6 +63,10 @@ pub extern "C" fn _start() -> ! {
 
     // Create root node in SNFS
     let _root_inode = hat.create_node("example_node_1", anchor_coords);
+
+    // Register anchor in spatial dictionary
+    let key_bytes = b"example_node_1";
+    let _dict_entry = dictionary.register_node(key_bytes, anchor_coords, 1.618);
 
     // Initialize video framebuffer (would be set up by bootloader)
     let _fb = Framebuffer::new(0xFFFF_FFFF as *mut u32, 1024, 768);

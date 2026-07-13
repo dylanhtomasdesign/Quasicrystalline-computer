@@ -1,0 +1,241 @@
+// modulo: core/libraries/dizionario.phi
+// Dizionario Spaziale Armonico - Mappatura dinamica di stringhe a coordinate 6D
+// Permette la registrazione e risoluzione di nodi nel sistema quasicristallino
+
+usa core::syscalls;
+
+// Costante del rapporto aureo
+costante PHI: Reale = 1.6180339887;
+costante PHI_INV: Reale = 0.6180339887;
+
+// ============================================
+// Strutture Dati
+// ============================================
+
+// Record che rappresenta un'associazione nel dizionario
+// Associa una stringa logica a coordinate iperdimensionali
+record AssociazioneNodo {
+    chiave_simbolo: Stringa,
+    coord_6d: MatriceReale[6],
+    frequenza_assegnata: Reale,
+    attivo: Booleano
+}
+
+// Lista delle syscall disponibili per il dizionario
+costanti_syscall DizionarioSyscalls {
+    SYS_SNFS_REGISTER_NODE: Intero = 0x200,
+    SYS_SNFS_RESOLVE_NODE: Intero = 0x201,
+    SYS_SNFS_LIST_NODES: Intero = 0x202,
+    SYS_SNFS_DELETE_NODE: Intero = 0x203,
+    SYS_SNFS_UPDATE_FREQUENCY: Intero = 0x204
+}
+
+// ============================================
+// Classe DizionarioSpaziale
+// ============================================
+
+// Dizionario che gestisce la mappatura tra stringhe e coordinate 6D
+// Incapsula le chiamate al Kernel per la registrazione nel SNFS
+classe DizionarioSpaziale {
+    // Lista dei nodi registrati localmente
+    attributo nodi_registrati: Lista[AssociazioneNodo];
+    
+    // Cache delle risoluzioni recenti per performance
+    attributo cache_risoluzione: Mappa[Stringa, MatriceReale[6]];
+    
+    // Contatore delle frequenze assegnate
+    attributo contatore_frequenze: Reale;
+
+    // ========================================
+    // Costruttore e Inizializzazione
+    // ========================================
+    
+    funzione inizializza(): DizionarioSpaziale {
+        dizionario = Nuovo DizionarioSpaziale();
+        dizionario.nodi_registrati = Nuova Lista[AssociazioneNodo]();
+        dizionario.cache_risoluzione = Nuova Mappa[Stringa, MatriceReale[6]]();
+        dizionario.contatore_frequenze = PHI;
+        ritorna dizionario;
+    }
+
+    // ========================================
+    // Registrazione Nodi
+    // ========================================
+
+    // Registra una nuova associazione nel dizionario e nel File System Spaziale
+    funzione associa(chiave: Stringa, coordinate: MatriceReale[6]): Risultato[AssociazioneNodo, Errore] {
+        // Verifica che la chiave non sia già registrata
+        se (Self.controlla_esistenza(chiave)) {
+            ritorna Risultato.Errore("Chiave già registrata: " + chiave);
+        }
+
+        // Calcola la frequenza caratteristica basata sulla media geometrica delle coordinate
+        frequenza = Self.calcola_frequenza(coordinate);
+        
+        // Genera coordinate armoniche se non fornite
+        coordinate_effettive = Self.genera_coordinate_armoniche(coordinate);
+
+        // Crea la nuova associazione
+        nuova_associazione = AssociazioneNodo(
+            chiave_simbolo: chiave,
+            coord_6d: coordinate_effettive,
+            frequenza_assegnata: frequenza,
+            attivo: true
+        );
+
+        // Aggiunge alla lista locale
+        Self.nodi_registrati.aggiungi(nuova_associazione);
+        
+        // Aggiorna la cache
+        Self.cache_risoluzione.imposta(chiave, coordinate_effettive);
+
+        // Effettua la syscall al kernel per mappare l'identità nel SNFS
+        // SYSCALL(DizionarioSyscalls.SYS_SNFS_REGISTER_NODE, chiave, coordinate_effettive, frequenza)
+        
+        ritorna Risultato.Ok(nuova_associazione);
+    }
+
+    // ========================================
+    // Risoluzione
+    // ========================================
+
+    // Risolve una stringa recuperando le coordinate 6D associate
+    funzione risolvi(chiave: Stringa): Risultato[MatriceReale[6], Errore] {
+        // Prima cerca nella cache locale
+        se (Self.cache_risoluzione.contiene(chiave)) {
+            ritorna Risultato.Ok(Self.cache_risoluzione.ottieni(chiave));
+        }
+
+        // Cerca nella lista dei nodi registrati
+        per ogni nodo in Self.nodi_registrati {
+            se (nodo.chiave_simbolo == chiave E nodo.attivo) {
+                // Aggiorna cache
+                Self.cache_risoluzione.imposta(chiave, nodo.coord_6d);
+                ritorna Risultato.Ok(nodo.coord_6d);
+            }
+        }
+
+        // Prova a risolvere tramite syscall al kernel
+        // coordinate = SYSCALL(DizionarioSyscalls.SYS_SNFS_RESOLVE_NODE, chiave)
+        // se (coordinate != null) {
+        //     Self.cache_risoluzione.imposta(chiave, coordinate);
+        //     ritorna Risultato.Ok(coordinate);
+        // }
+
+        ritorna Risultato.Errore("Nodo non trovato: " + chiave);
+    }
+
+    // ========================================
+    // Gestione Nodi
+    // ========================================
+
+    // Disattiva un nodo senza eliminarlo
+    funzione disattiva(chiave: Stringa): Booleano {
+        per ogni nodo in Self.nodi_registrati {
+            se (nodo.chiave_simbolo == chiave) {
+                nodo.attivo = false;
+                Self.cache_risoluzione.rimuovi(chiave);
+                // SYSCALL(DizionarioSyscalls.SYS_SNFS_DELETE_NODE, chiave)
+                ritorna true;
+            }
+        }
+        ritorna false;
+    }
+
+    // Riattiva un nodo disattivato
+    funzione riattiva(chiave: Stringa): Booleano {
+        per ogni nodo in Self.nodi_registrati {
+            se (nodo.chiave_simbolo == chiave) {
+                nodo.attivo = true;
+                Self.cache_risoluzione.imposta(chiave, nodo.coord_6d);
+                ritorna true;
+            }
+        }
+        ritorna false;
+    }
+
+    // ========================================
+    // Utility
+    // ========================================
+
+    // Calcola la frequenza caratteristica basata sulle coordinate
+    funzione privata calcola_frequenza(coordinate: MatriceReale[6]): Reale {
+        somma = 0.0;
+        Ogni i da 0 a 5 {
+            somma = somma + coordinate[i].assoluto();
+        }
+        media = somma / 6.0;
+        ritorna media * PHI;
+    }
+
+    // Genera coordinate armoniche se necessario
+    funzione privata genera_coordinate_armoniche(coordinate: MatriceReale[6]): MatriceReale[6] {
+        // Verifica che le coordinate siano valide
+        somma_quadrati = 0.0;
+        Ogni i da 0 a 5 {
+            somma_quadrati = somma_quadrati + (coordinate[i] * coordinate[i]);
+        }
+        
+        // Se le coordinate sono tutte zero, genera coordinate basate su phi
+        se (somma_quadrati < 0.0001) {
+            ritorna Self.genera_coordinate_phi_sequenziali();
+        }
+        
+        ritorna coordinate;
+    }
+
+    // Genera coordinate univoche basate su phi per nuovi nodi
+    funzione privata genera_coordinate_phi_sequenziali(): MatriceReale[6] {
+        // Usa il contatore per generare coordinate univoche
+        incremento = Self.contatore_frequenze;
+        Self.contatore_frequenze = Self.contatore_frequenze * PHI_INV;
+        
+        ritorna [
+            PHI_INV * incremento,
+            1.0 * incremento,
+            PHI_INV * incremento,
+            PHI * incremento,
+            1.0 * incremento,
+            PHI_INV * incremento
+        ];
+    }
+
+    // Controlla se una chiave esiste già
+    funzione privata controlla_esistenza(chiave: Stringa): Booleano {
+        per ogni nodo in Self.nodi_registrati {
+            se (nodo.chiave_simbolo == chiave) {
+                ritorna true;
+            }
+        }
+        ritorna false;
+    }
+
+    // Lista tutti i nodi attivi
+    funzione lista_nodi_attivi(): Lista[AssociazioneNodo] {
+        risultato = Nuova Lista[AssociazioneNodo]();
+        per ogni nodo in Self.nodi_registrati {
+            se (nodo.attivo) {
+                risultato.aggiungi(nodo);
+            }
+        }
+        ritorna risultato;
+    }
+
+    // Stampa il contenuto del dizionario
+    funzione stampa_contenuto(): Void {
+        ScriviLinea("=== Dizionario Spaziale Armonico ===");
+        ScriviLinea("Nodi registrati: " + stringa(Self.nodi_registrati.lunghezza()));
+        per ogni nodo in Self.nodi_registrati {
+            stato = se (nodo.attivo) "ATTIVO" alt "DISATTIVO";
+            ScriviLinea("  [" + stato + "] " + nodo.chiave_simbolo);
+            ScriviLinea("       Coordinate: [" 
+                + stringa(nodo.coord_6d[0]) + ", " 
+                + stringa(nodo.coord_6d[1]) + ", "
+                + stringa(nodo.coord_6d[2]) + ", "
+                + stringa(nodo.coord_6d[3]) + ", "
+                + stringa(nodo.coord_6d[4]) + ", "
+                + stringa(nodo.coord_6d[5]) + "]");
+            ScriviLinea("       Frequenza: " + stringa(nodo.frequenza_assegnata));
+        }
+    }
+}
