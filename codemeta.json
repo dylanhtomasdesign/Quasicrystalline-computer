@@ -1,0 +1,89 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Senemosia-Punto-Zero",
+  "version": "2.0",
+  "title": "Senemosìa Punto Zero v2.0 - Unified 6-Paradigm Heterogeneous Computing Framework",
+  "description": "A comprehensive co-design framework structurally unifying six computational paradigms: Classical Turing, 6D Geometric, Harmonic Resonance, Quantum, Neuromorphic, and Analog/Hybrid computing.",
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Senemosìa Cooperative"
+    }
+  ],
+  "keywords": [
+    "heterogeneous-computing",
+    "quantum-computing",
+    "neuromorphic-engineering",
+    "analog-computing",
+    "co-design",
+    "benchmarking",
+    "6d-geometry",
+    "golden-ratio",
+    "spiking-neural-networks",
+    "memristor"
+  ],
+  "license": "MIT",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Python",
+    "version": "3.9+"
+  },
+  "runtimePlatform": "Python 3.9+",
+  "operatingSystem": "Linux/macOS/Windows",
+  "targetProduct": {
+    "@type": "SoftwareApplication",
+    "name": "CodeOcean",
+    "url": "https://codeocean.com"
+  },
+  "maintainer": [
+    {
+      "@type": "Organization",
+      "name": "Senemosìa Cooperative",
+      "email": "senemosia@example.com"
+    }
+  ],
+  "relatedLink": "https://github.com/dylanhtomasdesign/Quasicrystalline-computer",
+  "citation": "Senemosìa Cooperative (2026). Orchestrating Heterogeneous Computing Substrates: A Unified 6-Paradigm Co-Design Framework and Benchmarking Suite. IEEE Micro.",
+  "funding": "MIT License - Open Source Research",
+  "developmentStatus": "active",
+  "embargoEndDate": null,
+  "isAccessibleForFree": true,
+  "isPartOf": [
+    {
+      "@type": "CreativeWork",
+      "name": "IEEE Micro Submission",
+      "url": "https://www.computer.org/micro"
+    }
+  ],
+  "files": [
+    {
+      "name": "notebooks/",
+      "description": "7 interactive Jupyter notebooks covering all 6 paradigms"
+    },
+    {
+      "name": "simulation_framework.py",
+      "description": "Core 6-paradigm simulation engine"
+    },
+    {
+      "name": "quantum_computing_module.py",
+      "description": "Quantum algorithms (Grover, Shor, QFT)"
+    },
+    {
+      "name": "neuromorphic_computing_module.py",
+      "description": "Spiking neural networks with STDP"
+    },
+    {
+      "name": "analog_hybrid_computing_module.py",
+      "description": "Continuous dynamical systems"
+    },
+    {
+      "name": "benchmark_suite.py",
+      "description": "100+ benchmark test cases"
+    },
+    {
+      "name": "senemosia_kernel/",
+      "description": "Rust kernel for hardware deployment"
+    }
+  ]
+}
