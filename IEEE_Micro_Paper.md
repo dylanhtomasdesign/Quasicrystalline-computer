@@ -1,5 +1,9 @@
 # Orchestrating Heterogeneous Computing Substrates: A Unified 6-Paradigm Co-Design Framework and Benchmarking Suite
 
+**Fabian Leo Naressi**  
+*Independent Researcher*  
+fabian.naressi@example.com
+
 **Senemosìa Punto Zero (v2.0)**
 
 ---
@@ -11,6 +15,8 @@ The saturation of conventional Von Neumann architectures has accelerated the dev
 We introduce the Substrate-Problem Alignment Principle, demonstrating that while all six paradigms are computationally equivalent under Turing completeness, they exhibit a 13-to-1000× performance and energy variance depending on algorithmic structure. To validate this, we deploy an integrated software simulation framework and a comprehensive benchmarking suite containing over 100 test cases. Empirical results from our synthetic benchmarks show that event-driven spiking neural networks with memristive synapses achieve unmatched energy efficiency (~10–50 pJ per operation) for pattern recognition, while our quantum module utilizing Grover's search algorithm scales at O(√N) for unstructured database lookups.
 
 Finally, we outline the hardware deployment pipeline for FPGA-based neuromorphic cores, discrete analog operational amplifier circuits, and cloud-based quantum hardware APIs, establishing a pragmatic near-term roadmap for multi-paradigm system-on-chip (SoC) architectures.
+
+**Author:** Fabian Leo Naressi, Independent Researcher
 
 ---
 
@@ -89,6 +95,9 @@ Senemosìa Punto Zero demonstrates that heterogeneous computing requires more th
 
 **Keywords**: Heterogeneous Computing, Hardware-Software Co-Design, Neuromorphic Engineering, Quantum Simulation, Analog Computing, Architectural Benchmarking
 
+**Acknowledgments**: This research was conducted independently by Fabian Leo Naressi.
+
 ---
 
-*IEEE Micro Submission - July 2026*
+*IEEE Micro Submission - July 2026*  
+*Author: Fabian Leo Naressi, Independent Researcher*
