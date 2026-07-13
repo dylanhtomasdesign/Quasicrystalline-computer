@@ -1,1 +1,188 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/dylanhtomasdesign/Quasicrystalline-computer/main?urlpath=lab/tree/notebooks/01_Introduction.ipynb)\n\n# Launch This Project on MyBinder\n\n## Quick Start\n\n**Click the badge above or [this link](https://mybinder.org/v2/gh/dylanhtomasdesign/Quasicrystalline-computer/main?urlpath=lab/tree/notebooks/01_Introduction.ipynb) to launch an interactive Jupyter Lab environment in your browser.**\n\nNo installation required! Everything runs in the cloud.\n\n---\n\n## What is MyBinder?\n\n[MyBinder.org](https://mybinder.org) is a free service that turns a GitHub repository into an interactive computing environment. It builds a Docker container from your code and dependencies, then launches it in a browser-based Jupyter Lab interface.\n\n### Benefits:\n- **Zero Installation:** No need to install Python, Jupyter, or dependencies\n- **Cloud-Based:** Runs in your browser\n- **Free & Open Source:** Powered by Jupyter and repo2docker\n- **Share Research:** Easily share reproducible computational research\n- **Instant Access:** Launch interactive notebooks directly from GitHub\n\n---\n\n## How It Works\n\n### 1. **MyBinder reads from your repository:**\n   - `requirements.txt` - Python package dependencies\n   - `runtime.txt` - Python version specification\n   - `Dockerfile` - Custom Docker image (alternative to requirements.txt)\n   - `environment.yml` - Conda environment specification (alternative)\n\n### 2. **Builds a Docker container** with:\n   - Base Python environment\n   - All dependencies installed\n   - Your code and notebooks\n\n### 3. **Launches Jupyter Lab** with:\n   - Pre-installed Python packages\n   - Direct access to your notebooks\n   - Full computing power (subject to limits)\n\n---\n\n## Notebooks Available\n\n### 📓 `01_Introduction.ipynb` ⭐ START HERE\n\nInteractive tutorial covering:\n- The Golden Ratio (φ) and 6D Geometry\n- Icosahedral Projection\n- Substrate-Problem Alignment Principle\n- Energy Efficiency Comparison\n- Laplacian Spectral Scheduling\n- Quantum Computing (Grover's Algorithm)\n- Spiking Neural Networks\n- Summary and Key Insights\n\n**Runtime:** ~5-10 minutes\n\n### 📊 Additional Notebooks (Coming Soon)\n\n- `02_Quantum_Computing.ipynb` - Detailed quantum algorithm simulations\n- `03_Neuromorphic_Computing.ipynb` - SNN training and benchmarks\n- `04_Analog_Computing.ipynb` - ODE solving demonstrations\n- `05_Hardware_Deployment.ipynb` - FPGA and deployment pipeline\n\n---\n\n## System Requirements\n\n### Client Side (Your Computer)\n- Web browser (Chrome, Firefox, Safari, Edge)\n- Internet connection\n- No special software needed\n\n### Server Side (MyBinder)\n- Default: 1-2 GB RAM per session\n- Default: ~12 hour session timeout\n- CPU: Shared (typically 1-2 cores)\n- Storage: Temporary (cleared after session ends)\n\n### Session Limits\n- **Idle Timeout:** 10 minutes\n- **Max Runtime:** ~12 hours\n- **Max Users:** ~100 concurrent per repo\n- **Max File Size:** 100 GB git repo size\n\n---\n\n## Keyboard Shortcuts (Jupyter Lab)\n\n| Shortcut | Action |\n|----------|--------|\n| `Ctrl + Enter` | Execute cell |\n| `Shift + Enter` | Execute cell and move to next |\n| `Ctrl + /` | Toggle comment |\n| `Tab` | Autocomplete |\n| `Shift + Tab` | Show docstring |\n| `Esc` | Exit edit mode |\n| `A` | Insert cell above |\n| `B` | Insert cell below |\n| `D + D` | Delete cell |\n| `M` | Convert to Markdown |\n| `Y` | Convert to Code |\n\n---\n\n## Save Your Work\n\n⚠️ **Important:** Sessions are temporary. To save your work:\n\n### Option 1: Download Notebook\n1. File → Download → `.ipynb` format\n2. Save to your local computer\n\n### Option 2: Export as PDF\n1. File → Export → PDF\n2. Save visualization of your work\n\n### Option 3: Push to GitHub\n1. Clone the repo locally\n2. Modify and commit changes\n3. Push back to GitHub\n\n---\n\n## Troubleshooting\n\n### **\"Build failed\" error**\n- Check `requirements.txt` syntax\n- Ensure package names are spelled correctly\n- Verify version compatibility\n- Rebuild by clicking \"Rebuild\" on mybinder.org page\n\n### **Slow to start**\n- First launch builds Docker image (~2-5 minutes)\n- Subsequent builds are faster (cached)\n- Try again later if services are busy\n\n### **Session keeps timing out**\n- MyBinder idles after 10 minutes of inactivity\n- Click on the notebook to keep it active\n- Run long computations before idle timeout\n\n### **Out of memory**\n- Close other browser tabs\n- Clear notebook outputs: Cell → All Output → Clear\n- Run computations with smaller datasets\n\n---\n\n## Configuration Files\n\n### `requirements.txt`\nSpecifies Python package dependencies:\n```\njupyter==1.0.0\njupyterlab==3.6.0\nnumpy==1.24.0\nscipy==1.10.0\nmatplotlib==3.7.0\n```\n\n### `runtime.txt`\nSpecifies Python version (repo2docker format):\n```\npython-3.9\n```\n\n### `Dockerfile`\nCustom environment setup:\n```dockerfile\nFROM python:3.9-slim\nRUN pip install jupyter numpy scipy matplotlib\n```\n\n---\n\n## Next Steps\n\n1. **Launch on MyBinder:** Click the badge at the top\n2. **Run the introduction notebook:** `01_Introduction.ipynb`\n3. **Explore the research:** Follow along with interactive examples\n4. **Modify and experiment:** Try changing parameters and running cells\n5. **Download results:** Save notebooks and visualizations\n\n---\n\n## Learn More\n\n- **MyBinder Documentation:** https://mybinder.readthedocs.io/\n- **Jupyter Project:** https://jupyter.org/\n- **Repo2Docker:** https://repo2docker.readthedocs.io/\n- **This Research:** https://github.com/dylanhtomasdesign/Quasicrystalline-computer\n\n---\n\n## Citation\n\nIf you use this work in research, please cite:\n\n```bibtex\n@software{naressi2026,\n  title={Senemos\\`{i}a Punto Zero v2.0: A Unified 6-Paradigm Heterogeneous Computing Framework},\n  author={Naressi, Fabian Leo},\n  year={2026},\n  url={https://github.com/dylanhtomasdesign/Quasicrystalline-computer}\n}\n```\n\n---\n\n**Ready to explore? Click the MyBinder badge above to get started!** 🚀\n"
+# Launch This Project on MyBinder
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/dylanhtomasdesign/Quasicrystalline-computer/main?urlpath=lab)
+
+## Quick Start
+
+**Click the badge above or [this link](https://mybinder.org/v2/gh/dylanhtomasdesign/Quasicrystalline-computer/main?urlpath=lab) to launch an interactive Jupyter Lab environment in your browser.**
+
+No installation required! Everything runs in the cloud.
+
+Once launched, navigate to the `notebooks/` folder to access all available notebooks.
+
+---
+
+## What is MyBinder?
+
+[MyBinder.org](https://mybinder.org) is a free service that turns a GitHub repository into an interactive computing environment. It builds a Docker container from your code and dependencies, then launches it in a browser-based Jupyter Lab interface.
+
+### Benefits:
+- **Zero Installation:** No need to install Python, Jupyter, or dependencies
+- **Cloud-Based:** Runs in your browser
+- **Free & Open Source:** Powered by Jupyter and repo2docker
+- **Share Research:** Easily share reproducible computational research
+- **Instant Access:** Launch interactive notebooks directly from GitHub
+
+---
+
+## How It Works
+
+### 1. **MyBinder reads from your repository:**
+   - `requirements.txt` - Python package dependencies
+   - `runtime.txt` - Python version specification
+   - `Dockerfile` - Custom Docker image (alternative to requirements.txt)
+   - `environment.yml` - Conda environment specification (alternative)
+
+### 2. **Builds a Docker container** with:
+   - Base Python environment
+   - All dependencies installed
+   - Your code and notebooks
+
+### 3. **Launches Jupyter Lab** with:
+   - Pre-installed Python packages
+   - Direct access to your notebooks
+   - Full computing power (subject to limits)
+
+---
+
+## Notebooks Available
+
+### 📓 `01_Introduction.ipynb` ⭐ START HERE
+
+Interactive tutorial covering:
+- The Golden Ratio (φ) and 6D Geometry
+- Icosahedral Projection
+- Substrate-Problem Alignment Principle
+- Energy Efficiency Comparison
+- Laplacian Spectral Scheduling
+- Quantum Computing (Grover's Algorithm)
+- Spiking Neural Networks
+- Summary and Key Insights
+
+**Runtime:** ~5-10 minutes
+
+### 📊 Additional Notebooks
+
+- `02_Quantum_Computing.ipynb` - Detailed quantum algorithm simulations
+- `03_Neuromorphic_Computing.ipynb` - SNN training and benchmarks
+- `04_Analog_Computing.ipynb` - ODE solving demonstrations
+- `05_Hardware_Deployment.ipynb` - FPGA and deployment pipeline
+
+---
+
+## System Requirements
+
+### Client Side (Your Computer)
+- Web browser (Chrome, Firefox, Safari, Edge)
+- Internet connection
+- No special software needed
+
+### Server Side (MyBinder)
+- Default: 1-2 GB RAM per session
+- Default: ~12 hour session timeout
+- CPU: Shared (typically 1-2 cores)
+- Storage: Temporary (cleared after session ends)
+
+### Session Limits
+- **Idle Timeout:** 10 minutes
+- **Max Runtime:** ~12 hours
+- **Max Users:** ~100 concurrent per repo
+- **Max File Size:** 100 GB git repo size
+
+---
+
+## Keyboard Shortcuts (Jupyter Lab)
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + Enter` | Execute cell |
+| `Shift + Enter` | Execute cell and move to next |
+| `Ctrl + /` | Toggle comment |
+| `Tab` | Autocomplete |
+| `Shift + Tab` | Show docstring |
+| `Esc` | Exit edit mode |
+| `A` | Insert cell above |
+| `B` | Insert cell below |
+| `D + D` | Delete cell |
+| `M` | Convert to Markdown |
+| `Y` | Convert to Code |
+
+---
+
+## Save Your Work
+
+⚠️ **Important:** Sessions are temporary. To save your work:
+
+### Option 1: Download Notebook
+1. File → Download → `.ipynb` format
+2. Save to your local computer
+
+### Option 2: Export as PDF
+1. File → Export → PDF
+2. Save visualization of your work
+
+### Option 3: Push to GitHub
+1. Clone the repo locally
+2. Modify and commit changes
+3. Push back to GitHub
+
+---
+
+## Troubleshooting
+
+### **"Build failed" error**
+- Check `requirements.txt` syntax
+- Ensure package names are spelled correctly
+- Verify version compatibility
+- Rebuild by clicking "Rebuild" on mybinder.org page
+
+### **Slow to start**
+- First launch builds Docker image (~2-5 minutes)
+- Subsequent builds are faster (cached)
+- Try again later if services are busy
+
+### **Session keeps timing out**
+- MyBinder idles after 10 minutes of inactivity
+- Click on the notebook to keep it active
+- Run long computations before idle timeout
+
+### **Out of memory**
+- Close other browser tabs
+- Clear notebook outputs: Cell → All Output → Clear
+- Run computations with smaller datasets
+
+---
+
+## Configuration Files
+
+### `requirements.txt`
+Specifies Python package dependencies (already included in repo).
+
+### `runtime.txt`
+Specifies Python version:
+```
+python-3.9
+```
+
+---
+
+## Next Steps
+
+1. **Launch on MyBinder:** Click the badge at the top
+2. **Run the introduction notebook:** `01_Introduction.ipynb`
+3. **Explore the research:** Follow along with interactive examples
+4. **Modify and experiment:** Try changing parameters and running cells
+5. **Download results:** Save notebooks and visualizations
+
+---
+
+## Learn More
+
+- **MyBinder Documentation:** https://mybinder.readthedocs.io/
+- **Jupyter Project:** https://jupyter.org/
+- **Repo2Docker:** https://repo2docker.readthedocs.io/
+- **This Research:** https://github.com/dylanhtomasdesign/Quasicrystalline-computer
+
+---
+
+**Ready to explore? Click the MyBinder badge above to get started!** 🚀
