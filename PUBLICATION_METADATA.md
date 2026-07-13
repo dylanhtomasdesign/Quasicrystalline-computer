@@ -7,7 +7,7 @@
 
 **Journal:** IEEE Micro (Submitted July 2026)
 
-**Authors:** Senemosìa Cooperative
+**Author:** Fabian Leo Naressi
 
 **Keywords:** Heterogeneous computing, quantum computing, neuromorphic engineering, analog computing, hardware-software co-design, quasicrystalline geometry, benchmarking
 
@@ -265,7 +265,7 @@ qemu-system-x86_64 -cdrom senemosia.iso -m 512M -enable-kvm
 
 ## Conflict of Interest Statement
 
-The authors declare no financial or non-financial competing interests.
+The author declares no financial or non-financial competing interests.
 
 ---
 
@@ -277,7 +277,8 @@ Special acknowledgment to the geometric mathematics and spectral graph theory co
 
 ---
 
-**Document Version:** 1.0  
+**Document Version:** 1.1  
 **Last Updated:** July 13, 2026  
-**Corresponding Author:** Senemosìa Cooperative  
+**Author:** Fabian Leo Naressi  
+**Email:** fabianleonaressi@gmail.com  
 **Repository:** https://github.com/dylanhtomasdesign/Quasicrystalline-computer
