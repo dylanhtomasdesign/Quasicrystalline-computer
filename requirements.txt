@@ -1,42 +1,74 @@
-# Senemosìa Punto Zero v2.0 - MyBinder Dependencies
+# Senemosìa Punto Zero v2.0 - Complete Dependencies
 # Unified 6-Paradigm Heterogeneous Computing Framework
 
-# Core Jupyter
-jupyter==1.0.0
-jupyterlab==3.6.3
-ipywidgets==8.1.1
-ipympl==0.9.3
+# NOTE: For lightweight development, use requirements-core.txt instead
 
-# Scientific Computing
-numpy==1.24.3
-scipy==1.11.4
-pandas==2.1.4
-sympy==1.12
+# ============================================================================
+# CORE SCIENTIFIC COMPUTING
+# ============================================================================
+numpy>=1.24.0,<2.0
+scipy>=1.10.0
+pandas>=2.0.0
+sympy>=1.12
 
-# Visualization
-matplotlib==3.8.2
-seaborn==0.13.1
-plotly==5.18.0
-k3d==2.8.0
+# ============================================================================
+# JUPYTER ENVIRONMENT
+# ============================================================================
+jupyter>=1.0.0
+jupyterlab>=3.6.0
+ipywidgets>=8.0.0
+ipympl>=0.9.0
+nbformat>=5.0.0
+nbconvert>=7.0.0
 
-# Quantum Computing Simulation
-qiskit==0.45.1
-qiskit-machine-learning==0.7.1
+# ============================================================================
+# VISUALIZATION
+# ============================================================================
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.18.0
+k3d>=2.8.0
 
-# Neural Networks
-torch==2.1.2
-tensorflow==2.15.0
+# ============================================================================
+# MACHINE LEARNING (Heavy - consider volume mounting for production)
+# ============================================================================
+# Uncomment for full ML support:
+# torch>=2.1.0
+# torchvision>=0.16.0
+# tensorflow>=2.15.0
+scikit-learn>=1.3.0
 
-# Signal Processing
-scikit-learn==1.3.2
-networkx==3.2.1
+# ============================================================================
+# QUANTUM COMPUTING
+# ============================================================================
+# Uncomment for full quantum support:
+# qiskit>=0.45.0
+# qiskit-machine-learning>=0.7.0
 
-# Parallel Computing
-numba==0.59.0
-dask==2024.1.0
-joblib==1.3.2
+# ============================================================================
+# GRAPH & NETWORK ANALYSIS
+# ============================================================================
+networkx>=3.2.0
 
-# Utilities
-tqdm==4.66.1
-h5py==3.10.0
-pillow==10.1.0
+# ============================================================================
+# PARALLEL & DISTRIBUTED COMPUTING
+# ============================================================================
+numba>=0.59.0
+dask>=2024.1.0
+joblib>=1.3.0
+
+# ============================================================================
+# UTILITIES
+# ============================================================================
+tqdm>=4.66.0
+h5py>=3.10.0
+pillow>=10.0.0
+psutil>=5.9.0
+
+# ============================================================================
+# CODE QUALITY (Development)
+# ============================================================================
+black>=23.0.0
+flake8>=6.0.0
+pytest>=7.4.0
+pytest-cov>=4.1.0

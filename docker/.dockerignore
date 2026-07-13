@@ -1,0 +1,63 @@
+# =============================================================================
+# Docker Ignore File
+# =============================================================================
+# Exclude heavy files that should be mounted via volumes
+#
+
+# Data files (should be mounted via volume)
+*.zip
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.parquet
+
+# Large datasets
+data/
+models/
+outputs/
+
+# Git
+.git/
+.gitignore
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# Documentation build
+docs/_build/
+site/

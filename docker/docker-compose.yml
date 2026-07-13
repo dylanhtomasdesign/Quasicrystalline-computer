@@ -1,0 +1,157 @@
+# =============================================================================
+# Senemosìa Punto Zero v2.0 - Docker Compose Configuration
+# =============================================================================
+#
+# Architecture:
+# - Development container with source code mounting
+# - Separate data volume for heavy datasets
+# - Model volume for checkpoints and outputs
+#
+# Usage:
+#   cd docker
+#   docker-compose up -d
+#   docker-compose exec senemosia-dev python notebooks/01_Introduction.ipynb
+#
+
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------------------
+  # Development Environment
+  # -------------------------------------------------------------------------
+  senemosia-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: senemosia-dev
+    hostname: senemosia-dev
+    
+    # GPU support (requires nvidia-container-toolkit)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # Interactive shell
+    stdin_open: true
+    tty: true
+    
+    # Source code mounting (live editing)
+    volumes:
+      # Source code - mounted from host for live development
+      - ../..:/workspace
+      type: bind
+      read_only: false
+      
+      # Heavy data - separate persistent volume
+      - data_volume:/data
+      
+      # Model checkpoints and outputs
+      - models_volume:/models
+      
+      # Cache for pip packages
+      - pip_cache:/root/.cache/pip
+    
+    # Environment variables
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - OMP_NUM_THREADS=4
+      - MKL_NUM_THREADS=4
+      - CUDA_VISIBLE_DEVICES=0
+    
+    # Network
+    network_mode: host
+    
+    # Working directory
+    working_dir: /workspace
+    
+    # Resource limits
+    # resources:
+    #   limits:
+    #     memory: 8G
+    #   reservations:
+    #     memory: 2G
+
+  # -------------------------------------------------------------------------
+  # Jupyter Lab Server
+  # -------------------------------------------------------------------------
+  jupyter:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.jupyter
+    container_name: senemosia-jupyter
+    hostname: senemosia-jupyter
+    
+    ports:
+      - "8888:8888"
+    
+    volumes:
+      - ../..:/workspace
+      - data_volume:/data
+      - models_volume:/models
+    
+    environment:
+      - JUPYTER_TOKEN=senemosia-local
+      - JUPYTER_ALLOW_INSECURE_WRITES=1
+    
+    command: >
+      jupyter lab 
+      --ip=0.0.0.0 
+      --port=8888 
+      --no-browser 
+      --NotebookApp.token='' 
+      --NotebookApp.allow_origin='*'
+
+  # -------------------------------------------------------------------------
+  # Benchmark Runner
+  # -------------------------------------------------------------------------
+  benchmark:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.benchmark
+    container_name: senemosia-benchmark
+    hostname: senemosia-benchmark
+    
+    volumes:
+      - ../..:/workspace
+      - data_volume:/data
+      - models_volume:/models
+      - ./benchmark_results:/results
+    
+    # Run benchmarks and exit
+    command: >
+      python -m benchmark_suite --output /results
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+volumes:
+  # Heavy datasets - persists between runs
+  # Can be backed up separately or mounted from external storage
+  data_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../data
+  
+  # Model checkpoints, trained weights, outputs
+  models_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../models
+  
+  # Pip package cache
+  pip_cache:
+    driver: local
+
+networks:
+  default:
+    name: senemosia-network
+    driver: bridge
